@@ -27,7 +27,7 @@ tlc_url: str = gd().page()
 bs = BeautifulSoup(tlc_url, "html.parser")    
 
 def dirctory_download(element: BeautifulSoup) -> List[str]:
-    return [data["href"] for data in element.find_all("a", {"title": "For-Hire Vehicle Trip Records"})]
+    return [data["href"] for data in element.find_all("a", {"title": "High Volume For-Hire Vehicle Trip Records"})]
 
 
 def file_download(start: int, end: int) -> None:
@@ -43,7 +43,7 @@ def file_download(start: int, end: int) -> None:
 def search_injection(start: int, end: int) -> None:
     for i in range(start, end-1, -1):
         for inner in bs.find_all("div", {"class": "faq-answers", "id": f"faq20{i}"}): 
-            file_download(start=22, end=19)
+            file_download(start=start, end=end)
             data_struct: List[str] = dirctory_download(inner)
             q.put(data_struct)
 
@@ -62,5 +62,5 @@ def download(n: int) -> None:
 
 
 
-search_injection(start=22, end=19)
-download(n=4)
+search_injection(start=22, end=20)
+download(n=3)
