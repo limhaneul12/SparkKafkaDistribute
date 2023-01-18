@@ -37,7 +37,7 @@ def folder_making(start: int, end: int, path: str) -> None:
     for j in range(start, end-1, -1):
         for i in bs.find_all("div", {"data-answer": f"faq20{j}", "class": "faq-questions collapsed"}):
             try:
-                name = i.text.replace("\n", "")
+                name: str = i.text.replace("\n", "")
                 os.mkdir(f"{path}/{name}/")
             except (FileExistsError, ValueError):
                 continue 
@@ -66,4 +66,4 @@ def download(n: int, path: str) -> None:
 
 
 search_injection(start=22, end=20, path=PATH)
-download(n=3)
+download(n=3, path=PATH)
