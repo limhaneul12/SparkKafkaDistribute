@@ -12,6 +12,7 @@ for p in path:
     for data in sd:
         l = f"{p}/{data}"
         f = pd.read_parquet(l)
-        print(f)
-
+        d += f.shape[0]
+        print(l ,f.shape[0])
+print(f"총 데이터 개수 --> {d}")
 
