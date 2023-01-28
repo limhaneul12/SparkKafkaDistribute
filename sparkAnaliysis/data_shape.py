@@ -22,4 +22,4 @@ def test():
 location = "/Users/imhaneul/Documents/spark-kafka-distribute/sparkAnaliysis/data/2020/fhvhv_tripdata_2020-01.parquet"
 data = pd.read_parquet(location)
 
-print(data.columns)
+print(data.shape)
