@@ -87,24 +87,27 @@ def year_data() -> List:
     t_pickup_dat = []
     for data in year_read_data():
         data.createOrReplaceTempView("trips")
-        td = [spark.sql(qs).toPandas()]
+        td = spark.sql(qs).toPandas()
         t_pickup_dat.append(td)
     return t_pickup_dat
 
 
-def visualization() -> None:
-    fig, ax = plt.subplots(3, 4, figsize=(30, 10))
-    plt.subplots_adjust(wspace = 0.5, hspace = 0.6)
+def visualization_shape(x: str, y:str, data: List) -> None:
+    n_rows = 3
+    n_cols = 4
+    
+    fig, ax = plt.subplots(n_rows, n_cols, figsize=(30, 10))
+    plt.subplots_adjust(wspace = 0.4, hspace = 0.4)
     fig.set_size_inches((80, 20))
 
-    for tf_p in (tf for data in year_data() for tf in data):
-        for low in range(len(ax)):
-                for row in (j for n in ax for j in range(len(n))):   
-                    sns.barplot(x="pickup", y="time", data=tf_p, ax=ax[low][row])
-                    ax[low][row].tick_params(rotation=45)
-                    ax[low][row].set_title(f"taxi data")
+    for i, axi in enumerate(ax.flat):
+        sns.barplot(x=x, y=y, data=data[i], ax=axi)
+        axi.set_title(f'taxi 2020 --> date {i+1}')
+        axi.set_xticklabels(axi.get_xticklabels(), rotation=30)
+
+    # 데이터 플롯 출력
     plt.show()
 
 
 
-visualization()
+visualization_shape(x="pickup", y="time", data=year_data())
