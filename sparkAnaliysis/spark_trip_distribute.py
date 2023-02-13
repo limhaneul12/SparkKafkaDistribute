@@ -91,6 +91,7 @@ def year_data() -> List:
         t_pickup_dat.append(td)
     return t_pickup_dat
 
+
 def visualization() -> None:
     fig, ax = plt.subplots(3, 4, figsize=(30, 10))
     plt.subplots_adjust(wspace = 0.5, hspace = 0.6)
