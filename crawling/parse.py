@@ -3,13 +3,14 @@ import pathlib
 import collections
 import calendar
 import logging
-from typing import List, Final
+from typing import Final
 from queue import Queue
 
 from urllib.request import urlretrieve
 from bs4 import BeautifulSoup
 from page_source import GoogleUtilityDriver as gd
-if not hasattr(collections, 'Callable'):
+
+if not hasattr(collections, "Callable"):
     collections.Callable = collections.abc.Callable
 
 
@@ -20,34 +21,41 @@ CPATH: Final[str] = f"{os.getcwd()}/data"
 try:
     os.mkdir(f"{PATH}/")
 except FileExistsError:
-    logging.info(f'이미 메인 파일이 존재합니다.')
+    logging.info(f"이미 메인 파일이 존재합니다.")
 
 
 q = Queue()
-month = list(calendar.month_name)
+month: list[str] = list(calendar.month_name)
 tlc_url: str = gd().page()
-bs = BeautifulSoup(tlc_url, "html.parser")    
+bs = BeautifulSoup(tlc_url, "html.parser")
 
 
-def file_download(element: BeautifulSoup) -> List[str]:
-    return [data["href"] for data in element.find_all("a", {"title": "High Volume For-Hire Vehicle Trip Records"})]
+def file_download(element: BeautifulSoup) -> list[str]:
+    return [
+        data["href"]
+        for data in element.find_all(
+            "a", {"title": "High Volume For-Hire Vehicle Trip Records"}
+        )
+    ]
 
 
 def folder_making(start: int, end: int, path: str) -> None:
-    for j in range(start, end-1, -1):
-        for i in bs.find_all("div", {"data-answer": f"faq20{j}", "class": "faq-questions collapsed"}):
+    for j in range(start, end - 1, -1):
+        for i in bs.find_all(
+            "div", {"data-answer": f"faq20{j}", "class": "faq-questions collapsed"}
+        ):
             try:
                 name: str = i.text.replace("\n", "")
                 os.mkdir(f"{path}/{name}/")
             except (FileExistsError, ValueError):
-                continue 
+                continue
 
-        
+
 def search_injection(start: int, end: int, path: str) -> None:
-    for i in range(start, end-1, -1):
-        for inner in bs.find_all("div", {"class": "faq-answers", "id": f"faq20{i}"}): 
+    for i in range(start, end - 1, -1):
+        for inner in bs.find_all("div", {"class": "faq-answers", "id": f"faq20{i}"}):
             folder_making(start=start, end=end, path=path)
-            data_struct: List[str] = file_download(inner)
+            data_struct: list[str] = file_download(inner)
             q.put(data_struct)
 
 
@@ -61,9 +69,9 @@ def download(n: int, path: str) -> None:
             file_location: str = f"{path}/{name_number}/{name}"
             logging.info(f"{file_location} 저장합니다")
             urlretrieve(da, file_location)
-        j+=1     
+        j += 1
 
 
-
-search_injection(start=22, end=20, path=PATH)
-download(n=3, path=PATH)
+if __name__ == "__main__":
+    search_injection(start=23, end=20, path=PATH)
+    download(n=4, path=PATH)

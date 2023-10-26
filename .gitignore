@@ -129,3 +129,6 @@ dmypy.json
 .pyre/
 data
 data/
+.vscode
+crawling/chromedriver
+sparkAnaliysis/spark-warehouse

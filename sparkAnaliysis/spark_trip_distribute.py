@@ -1,10 +1,12 @@
 from pyspark.sql import SparkSession
-import os 
 from typing import Generator, List
+import seaborn as sns 
+import matplotlib.pyplot as plt 
+import os 
 
 
 MAX_MEMORY = "5g"
-spark = SparkSession.builder.master("local")\
+spark = SparkSession.builder.master("local[*]")\
                     .appName("ml_taix")\
                     .config("spark.excutor.memory", MAX_MEMORY)\
                     .config("spark.driver.memory", MAX_MEMORY).getOrCreate()
@@ -15,49 +17,7 @@ trip_directory = spark.read.parquet(f"file:///{trip_data}/*")
 trip_directory.createOrReplaceTempView("trips")
 
 
-# qs = """
-# SELECT
-#     pickup_datetime,
-#     PULocationID as pickup_location_id,
-#     DOLocationID as drop_location_id,
-#     tips,
-#     driver_pay,
-#     trip_miles,
-#     trip_time
-# FROM 
-#     trips
-# """
-# spark.sql(qs).describe().show()
-
-
-# qs = """
-# SELECT 
-#     pickup, 
-#     count(*) as time
-# FROM
-#     (SELECT 
-#         split(pickup_datetime, " ")[0] as pickup
-#     FROM 
-#         trips    
-#     )
-# GROUP BY 
-#     pickup
-# ORDER BY 
-#     pickup
-# """
-# time_data = spark.sql(qs).toPandas()
-
-import seaborn as sns 
-import matplotlib.pyplot as plt 
-
-# fig, ax = plt.subplots(figsize=(100, 9))
-# sns.barplot(x="pickup", y="time", data=time_data)
-# plt.xticks(rotation=45)
-# plt.title("NYC Texi 2020-01-01 ~ 2021-01-01")
-# plt.show()
-
-
-directory: Generator[str, None, None] = [f"{os.getcwd()}/data/{i}" for i in os.listdir(f"{os.getcwd()}/data")][2]
+directory: str = [f"{os.getcwd()}/data/{i}" for i in os.listdir(f"{os.getcwd()}/data")][2]
 filename: List[str] = [f"{directory}/{data}" for data in os.listdir(directory)]
 filename.sort()
 
@@ -92,7 +52,7 @@ def year_data() -> List:
     return t_pickup_dat
 
 
-def visualization_shape(x: str, y:str, data: List) -> None:
+def visualization_shape(x: str, y: str, data: List) -> None:
     n_rows = 3
     n_cols = 4
     
