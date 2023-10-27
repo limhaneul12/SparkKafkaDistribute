@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "spark-kafka-distribute"
+version = "0.1.0"
+description = ""
+authors = ["skip"]
+readme = "README.md"
+packages = [{include = "spark_kafka_distribute"}]
+
+[tool.poetry.dependencies]
+python = "3.11.3"
+pyspark = "3.3.0"
+pandas = "^2.1.2"
+numpy = "^1.26.1"
+bs4 = "^0.0.1"
+seaborn = "^0.13.0"
+selenium = "^4.14.0"
+webdriver-manager = "^4.0.1"
+jupyter = "^1.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

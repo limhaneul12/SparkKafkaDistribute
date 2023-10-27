@@ -1,0 +1,7 @@
+pyspark==3.3.0
+pandas
+numpy
+bs4
+seaborn
+selenium
+webdriver-manager

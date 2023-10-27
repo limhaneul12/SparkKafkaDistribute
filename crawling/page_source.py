@@ -1,8 +1,8 @@
 import datetime
 import create_log
 
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 
 
 # 현재 시각하는 시간 설정
@@ -49,10 +49,13 @@ prefs: dict[str, dict[str, int]] = {
 }
 
 option_chrome.add_experimental_option("prefs", prefs)
+service = Service(
+    executable_path="/Users/imhaneul/Documents/spark-kafka-distribute/crawling/chromedriver",
+)
 
 # chromedriver_path
 web_driver = webdriver.Chrome(
-    "/Users/imhaneul/Documents/spark-kafka-distribute/crawling/chromedriver",
+    service=service,
     options=option_chrome,
 )
 
