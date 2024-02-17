@@ -1,7 +1,5 @@
 import os
 import pathlib
-import collections
-import calendar
 import logging
 from typing import Final
 from queue import Queue
@@ -9,9 +7,6 @@ from queue import Queue
 from urllib.request import urlretrieve
 from bs4 import BeautifulSoup
 from page_source import GoogleUtilityDriver as gd
-
-if not hasattr(collections, "Callable"):
-    collections.Callable = collections.abc.Callable
 
 
 PATH: Final[str] = f"{pathlib.Path(__file__).parent.parent}/sparkAnaliysis/data"
@@ -25,7 +20,6 @@ except FileExistsError:
 
 
 q = Queue()
-month: list[str] = list(calendar.month_name)
 tlc_url: str = gd().page()
 bs = BeautifulSoup(tlc_url, "html.parser")
 

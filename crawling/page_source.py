@@ -2,7 +2,8 @@ import datetime
 import create_log
 
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service as ChromeService
 
 
 # 현재 시각하는 시간 설정
@@ -49,13 +50,9 @@ prefs: dict[str, dict[str, int]] = {
 }
 
 option_chrome.add_experimental_option("prefs", prefs)
-service = Service(
-    executable_path="/Users/imhaneul/Documents/spark-kafka-distribute/crawling/chromedriver",
-)
 
-# chromedriver_path
-web_driver = webdriver.Chrome(
-    service=service,
+webdriver_remote = webdriver.Chrome(
+    service=ChromeService(ChromeDriverManager().install()),
     options=option_chrome,
 )
 
@@ -64,7 +61,7 @@ log.info(f"사이트 HTML 수집을 시작합니다.")
 
 
 class GoogleUtilityDriver:
-    def __init__(self, driver=web_driver) -> None:
+    def __init__(self, driver=webdriver_remote) -> None:
         self.url = f"https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page"
         self.driver = driver
 
